@@ -13,11 +13,11 @@ class LoginController
 
     public function httpPostMethod(Http $http, array $formFields)
     {
-        var_dump($_POST);
+        //var_dump($_POST);
 
         $userModel = new UserModel();
         $userModel->findWithEmailPassword($_POST['email'],$_POST['password']);
 
-
+        $http->redirectTo('/')
     }
 }
