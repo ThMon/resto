@@ -18,6 +18,6 @@ class LoginController
         $userModel = new UserModel();
         $userModel->findWithEmailPassword($_POST['email'],$_POST['password']);
 
-        $http->redirectTo('/')
+        $http->redirectTo('/');
     }
 }

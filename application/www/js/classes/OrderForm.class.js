@@ -9,7 +9,7 @@ var OrderForm = function()
 	this.onChangeMeal();
 	$('#meal').on('change', this.onChangeMeal.bind(this));
 	$('#order-form button').on('click', this.validateMeal.bind(this));
-
+    $(document).on('click', '.trash', this.removeMeal.bind(this));
 }
 
 
@@ -23,7 +23,7 @@ OrderForm.prototype.onChangeMeal = function(event)
 
     console.log(getRequestUrl() + '/meal?id=' + mealId);
     
-    $.getJSON( getRequestUrl() + '/meal?id=' + mealId, this.onAjaxChangeMeal.bind(this));    
+    $.getJSON( getRequestUrl() + '/meal?id=' + mealId, this.onAjaxChangeMeal);    
 };
 
 
@@ -49,10 +49,19 @@ OrderForm.prototype.validateMeal = function(event) {
 	var name = $('#meal').find('option:selected').text();
     var quantity = $('#quantity').val();
     var salePrice = $('#meal-details strong').text();
+    var img = $('#meal-details img').attr('src');
 
     console.log(mealId+','+ name+','+ quantity+','+ salePrice);
 
-	this.basket.add(mealId, name, quantity, salePrice);
+	this.basket.add(mealId, name, quantity, salePrice, img);
 
+
+}
+
+OrderForm.prototype.removeMeal = function(event) {
+    event.preventDefault();
+    var index = event.currentTarget.dataset.id;
+    console.log(index);
+    this.basket.remove(index);
 
 }
