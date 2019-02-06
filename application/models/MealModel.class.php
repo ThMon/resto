@@ -2,6 +2,8 @@
 
 class MealModel {
 
+    // méthode pour récupérer tous les meals
+
 	public function listAll() {
         $database = new Database();
 
@@ -9,6 +11,9 @@ class MealModel {
 
         return $database->query($sql);
     }
+
+
+    // méthode pour récupérer un meals en fonction de son id
 
 
     public function find($mealId)

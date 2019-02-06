@@ -2,10 +2,14 @@
 
 class UserModel {
 
-
+    //méthode d'enregistrement utilisateur
 	public function signUp( $lastname, $firstname, $email, $password, $birthDate, $address, $city, $zipCode, $phone ) {
 
+        // instaciation de la librairie database
+
 		$database = new Database();
+
+        // il faut hasher le mot de pass pour des raisons de sécurité
 
 		$hashPassword = $this->hashPassword($password);
 		
@@ -28,7 +32,7 @@ class UserModel {
 
 	}
 
-
+    //méthode pour connecter utilisateur
 	public function findWithEmailPassword($email, $password)
     {
         $database = new Database();
@@ -44,18 +48,15 @@ class UserModel {
         );
 
         // Est-ce qu'on a bien trouvé un utilisateur ?
-        /*if(empty($user) == true)
+        if(empty($user) == true)
         {
-            throw new DomainException
-            (
-                "Il n'y a pas de compte utilisateur associé à cette adresse email"
-            );
+           var_dump('pas trouvé');
         }
-*/
+
         // Est-ce que le mot de passe spécifié est correct par rapport à celui stocké ?
     	if($this->verifyPassword($password, $user['Password']) ==true)
     	{
-			
+			// création de la session et enregistrement date(ds la super gloabal $_SESSION)
     		$_SESSION['user']['userId'] = $user['Id'];
     		$_SESSION['user']['firstName'] = $user['FirstName'];
     		$_SESSION['user']['lastName'] = $user['LastName'];
@@ -73,7 +74,7 @@ class UserModel {
     }
 
 
-
+    // méthode de cryptage mot de passe
 	private function hashPassword($password)
     {
         
@@ -82,7 +83,7 @@ class UserModel {
         return crypt($password, $salt);
     }
 
-
+    // méthode de vérification de mot de passe crypté
     private function verifyPassword($password, $hashedPassword)
 	{
 		return crypt($password, $hashedPassword) == $hashedPassword;

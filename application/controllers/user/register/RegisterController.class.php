@@ -13,9 +13,13 @@ class RegisterController
 
     public function httpPostMethod(Http $http, array $formFields)
     {
-    	var_dump($_POST);
+        //on vérifie toujours qu'on récupère bien le form
+    	//var_dump($_POST);
 
+        //instanciation des méthodes contenu ds le UserModel
         $userModel = new UserModel();
+
+        // appel de la méthode signUp qui enregistreun nouvel utilisateur dans la base de donnée
         $userModel->signUp(
                         $_POST['lastName'],
                         $_POST['firstName'],
@@ -27,6 +31,8 @@ class RegisterController
                         $_POST['zipCode'],
                         $_POST['phone']
                     );
+        //redirection vers index
+        $http->rediretTo('/');
 
     }
 }

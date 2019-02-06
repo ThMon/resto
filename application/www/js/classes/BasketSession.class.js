@@ -4,18 +4,19 @@ var BasketSession = function()
 {
     // Contenu du panier.
     this.items = null;
-
+    // chargement du localStorage dans le panier au chargement de la page
     this.load();
 };
 
 
-
+// méthode de sauvegarde dans le localStorage
 BasketSession.prototype.save = function()
 {
     saveDataToDomStorage('panier', this.items);
 };
 
-
+// méthode de chargement du localStorage dans le panier 
+// appelle le bon build en fonction de l'url
 BasketSession.prototype.load = function()
 {
     this.items = loadDataFromDomStorage('panier');
@@ -34,10 +35,11 @@ BasketSession.prototype.load = function()
     }
 };
 
+//ajoute un meal dans le panier 
 BasketSession.prototype.add = function(mealId, name, quantity, salePrice, img)
 {
 
-
+    // on récupère les infos
     mealId    = parseInt(mealId);
     quantity  = parseInt(quantity);
     salePrice = parseFloat(salePrice);
@@ -46,6 +48,8 @@ BasketSession.prototype.add = function(mealId, name, quantity, salePrice, img)
         $('#quantity').css('border', '1px solid grey');
         for(var index = 0; index < this.items.length; index++)
             {
+                // on teste si le mealId n'est pas déjà présent dans le localStorage si oui on augmente 
+                // juste la quantité
                 if(this.items[index].mealId == mealId)
                 {
                     this.items[index].quantity += quantity;
@@ -56,7 +60,7 @@ BasketSession.prototype.add = function(mealId, name, quantity, salePrice, img)
                     return;
                 }
             }
-
+            // sinon on push
             this.items.push(
             {
                 mealId    : mealId,
@@ -78,6 +82,7 @@ BasketSession.prototype.add = function(mealId, name, quantity, salePrice, img)
 
 };
 
+// retire un meal du panier 
 BasketSession.prototype.remove = function(index) {
     this.items.splice(index, 1);
     this.save();
@@ -85,7 +90,7 @@ BasketSession.prototype.remove = function(index) {
 }
 
 
-
+// affichage pour la page order
 
 BasketSession.prototype.build = function() {
 	var table = $('<table class="generic-table">');
@@ -102,8 +107,9 @@ BasketSession.prototype.build = function() {
 
 }
 
-
+// affichage pour la page order/validate
 BasketSession.prototype.buildRecap = function() {
+    // variable pour calculer le prix total HT
     var priceHT = 0;
     $('.meal-list tbody').empty();
     for (var i=0; i < this.items.length; i++) {
@@ -116,7 +122,7 @@ BasketSession.prototype.buildRecap = function() {
 
     var tva = (priceHT*0.2).toFixed(2);
     var ttc = (parseFloat(priceHT)+parseFloat(tva)).toFixed(2);
-
+    // affichage du prix
     $('#totalht').text(priceHT.toFixed(2)+' €');
     $('#tva').text(tva+' €');
     $('#totalttc').text(ttc+' €');

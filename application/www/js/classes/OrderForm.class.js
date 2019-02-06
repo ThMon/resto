@@ -1,9 +1,9 @@
 'use strict';
 
-
+// gestion de toute la page order
 var OrderForm = function()
 {
-
+    // instanciation de toutes les méthodes de gestion de localStorage
 	this.basket = new BasketSession();
 
 	this.onChangeMeal();
@@ -12,21 +12,21 @@ var OrderForm = function()
     $(document).on('click', '.trash', this.removeMeal.bind(this));
 }
 
-
+//au changement fait une requête AJAX sur notre page /meal afin d'avoir les infos d'un meal
 OrderForm.prototype.onChangeMeal = function(event)
 {
     var mealId;
 
     mealId = $('#meal').val();
 
-    console.log(mealId);
+    //console.log(mealId);
 
-    console.log(getRequestUrl() + '/meal?id=' + mealId);
+   // console.log(getRequestUrl() + '/meal?id=' + mealId);
     
     $.getJSON( getRequestUrl() + '/meal?id=' + mealId, this.onAjaxChangeMeal);    
 };
 
-
+// affichage d'un meal 
 OrderForm.prototype.onAjaxChangeMeal = function(response)
 {
 
@@ -42,6 +42,8 @@ OrderForm.prototype.onAjaxChangeMeal = function(response)
 
 }
 
+
+// enregistrement d'un meal ds le localStorage et utilisation de la méthode add dans basketSession
 OrderForm.prototype.validateMeal = function(event) {
 	event.preventDefault();
 
@@ -58,6 +60,7 @@ OrderForm.prototype.validateMeal = function(event) {
 
 }
 
+// méthode qui supprime un meal du LocalStorage appelle la méthode remove de BasketSession
 OrderForm.prototype.removeMeal = function(event) {
     event.preventDefault();
     var index = event.currentTarget.dataset.id;
