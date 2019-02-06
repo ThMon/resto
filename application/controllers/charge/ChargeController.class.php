@@ -16,11 +16,14 @@ class ChargeController
     public function httpPostMethod(Http $http, array $formFields)
     {
 
+        $orderId= $_GET['orderId'];
+        $orderModel = new OrderModel();
+
+        $order = $orderModel->findOrder($orderId);
+
+        $totalTTC = floatval($order['TotalAmount']) + floatval($order['TaxAmount']);
 
         require_once('vendor/autoload.php');
-
-        
-
 
 
         \Stripe\Stripe::setApiKey('sk_test_WvJOfwZp9WEwNygwuHXgiwLX');
@@ -36,12 +39,12 @@ class ChargeController
         // create customer 
 
         $customer = \Stripe\Customer::create(array(
-            "email" => $email
+            "email" => $email,
             "source" => $token
         ));
 
         $charge = \Stripe\Charge::create(array(
-            "amount" => $totalTTC,
+            "amount" => $totalTTC*100,
             "currency" => "eur",
             "description"=>"Commande ok",
             "customer" => $customer->id

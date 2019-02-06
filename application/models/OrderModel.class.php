@@ -3,7 +3,18 @@
 
 class OrderModel
 {   
-	
+	public function findOrder($orderId) {
+        $database = new Database();
+
+        // Insertion de la commande dans la base de donées.
+        $order = $database->queryOne
+        (
+            'SELECT * FROM `Order` WHERE Id= ?',
+            [ $orderId ]
+        );
+
+        return $order;
+    }
 
     /* Méthode d'enregistrement d'un order et de ses orderline
 
@@ -81,10 +92,8 @@ class OrderModel
             ]
         );
 
-        $taxeRate = $totalAmount * 0.2;
 
-        $totalTTC = $totalAmount + $taxeRate;
 
-        return $totalTTC;
+        return $orderId;
     }
 }

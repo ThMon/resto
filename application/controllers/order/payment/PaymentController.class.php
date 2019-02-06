@@ -41,14 +41,16 @@ class PaymentController
 
         // fonction d'enregistrement de la commande dans les tables Order et OrderLine
         $orderModel = new OrderModel();
-        $totalTTC    = $orderModel->validate
+        $orderId    = $orderModel->validate
         (
             $_SESSION['user']['userId'],
             $orders
         );
 
-        
 
+        return [
+            'orderId'=>$orderId
+        ];
 
 
     }
